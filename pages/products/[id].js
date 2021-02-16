@@ -1,10 +1,37 @@
-import { useRouter } from 'next/router';
+export async function getStaticPaths() {
+    await delay(5000)
+    return {
+        paths: [{
+            params: {
+                id: '1'
+            },
+            params: {
+                id: '2'
+            },
+            params: {
+                id: '3'
+            }
+        }],
+        fallback: 'blocking'
+    }
+}
 
-function Products () {
-    const router = useRouter();
-    const id = router.query.id;
+export async function getStaticProps(context) {
+    const id = context.params.id;
 
-    return <div>Id product: {id}</div>
+    return {
+        props: {
+            id
+        }
+    }
+}
+
+function Products(props) {
+    return <div>Id product: {props.id}</div>
 }
 
 export default Products;
+
+function delay(ms) {
+    return new Promise(resolve => setTimeout(resolve, ms));
+}
